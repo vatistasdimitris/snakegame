@@ -23,6 +23,8 @@ Challenge yourself with this classic Snake Game, now with doubled dimensions! En
 🔄 **How to Restart:**
 Click the "Restart" button or refresh the page to start a new game.
 
-🚀 **Ready to Play? Try it out [here](https://snake-apple.w3spaces-preview.com/snakegame.html)**
+🚀 **Ready to Play? Try it out :
+ [PC](https://snake-apple.w3spaces-preview.com/snakegame.html)**
+ [Phone App](snakegame.apk)**
 
 Enjoy the Snake Game and have fun trying to outsmart the snake! 🚴‍♂️🐍
