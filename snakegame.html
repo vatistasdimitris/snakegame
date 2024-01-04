@@ -55,37 +55,55 @@
   <canvas id="snakeCanvas"></canvas>
 
   <script>
+    // Game variables
     const canvas = document.getElementById("snakeCanvas");
     const ctx = canvas.getContext("2d");
-
     const boxSize = 20;
     const gridSize = 20;
     let snake = [{ x: 10, y: 10 }];
-    let food = { x: 15, y: 15 };
+    let food = getRandomFoodPosition();
     let direction = "right";
     let score = 0;
     let gameRunning = true;
 
+    // Set canvas size
     function setCanvasSize() {
-      canvas.width = window.innerWidth - 20;
-      canvas.height = window.innerHeight - 20;
+      canvas.width = Math.floor((window.innerWidth - 20) / gridSize) * gridSize;
+      canvas.height = Math.floor((window.innerHeight - 20) / gridSize) * gridSize;
     }
 
+    // Draw grid on the canvas
     function drawGrid() {
       ctx.beginPath();
       ctx.strokeStyle = "#ddd";
-      for (let i = 0; i < canvas.width; i += gridSize) {
+
+      for (let i = 0; i <= canvas.width; i += gridSize) {
         ctx.moveTo(i, 0);
         ctx.lineTo(i, canvas.height);
       }
-      for (let i = 0; i < canvas.height; i += gridSize) {
+
+      for (let i = 0; i <= canvas.height; i += gridSize) {
         ctx.moveTo(0, i);
         ctx.lineTo(canvas.width, i);
       }
+
       ctx.stroke();
       ctx.closePath();
     }
 
+    // Draw rounded rectangle
+    function drawRoundedRect(x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Draw game elements
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGrid();
@@ -103,17 +121,7 @@
       ctx.fillText("Score: " + score, 10, 30);
     }
 
-    function drawRoundedRect(x, y, width, height, radius) {
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.arcTo(x + width, y, x + width, y + height, radius);
-      ctx.arcTo(x + width, y + height, x, y + height, radius);
-      ctx.arcTo(x, y + height, x, y, radius);
-      ctx.arcTo(x, y, x + width, y, radius);
-      ctx.closePath();
-      ctx.fill();
-    }
-
+    // Move the snake
     function move() {
       if (!gameRunning) return;
 
@@ -156,10 +164,12 @@
       draw();
     }
 
+    // Check collision with self
     function collisionWithSelf() {
       return snake.slice(1).some(segment => segment.x === snake[0].x && segment.y === snake[0].y);
     }
 
+    // Reset the game
     function resetGame() {
       snake = [{ x: 10, y: 10 }];
       food = getRandomFoodPosition();
@@ -169,6 +179,7 @@
       hideMenu();
     }
 
+    // Get random food position within borders
     function getRandomFoodPosition() {
       return {
         x: Math.floor(Math.random() * (canvas.width / gridSize)),
@@ -176,25 +187,30 @@
       };
     }
 
+    // Show menu
     function showMenu() {
       const menu = document.getElementById("menu");
       menu.style.display = "block";
     }
 
+    // Hide menu
     function hideMenu() {
       const menu = document.getElementById("menu");
       menu.style.display = "none";
     }
 
+    // Pause the game
     function pauseGame() {
       gameRunning = false;
     }
 
+    // Resume the game
     function resumeGame() {
       gameRunning = true;
       move();
     }
 
+    // Event listeners
     const restartBtn = document.getElementById("restartBtn");
     restartBtn.addEventListener("click", resetGame);
 
@@ -247,9 +263,11 @@
       touchStartY = 0;
     }
 
+    // Set initial canvas size and listen for resize
     setCanvasSize();
     window.addEventListener("resize", setCanvasSize);
 
+    // Start the game loop
     setInterval(move, 100);
   </script>
 </body>
