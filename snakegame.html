@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="snake.png" type="image/png">
+<link rel="shortcut icon" href="snake.png" type="image/png">
+
   <style>
     body {
       display: flex;
@@ -63,7 +66,7 @@
     const gridSize = 40;
     let snake = [{ x: 5, y: 5 }];
     let food = getRandomFoodPosition();
-    let direction = "right";
+    let direction = "down";
     let score = 0;
     let gameRunning = true;
 
@@ -174,7 +177,7 @@
     function resetGame() {
       snake = [{ x: 5, y: 5 }];
       food = getRandomFoodPosition();
-      direction = "right";
+      direction = "down";
       score = 0;
       gameRunning = true;
       hideMenu();
