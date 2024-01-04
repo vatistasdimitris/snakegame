@@ -1,5 +1,5 @@
 # snakegame
-# Snake Game on Canvas 🐍🎮
+# Snake Game 🐍🎮
 
 Challenge yourself with this classic Snake Game, now with doubled dimensions! Enjoy the nostalgic gameplay as you control the snake to eat apples and grow longer. 🍏 Can you beat your high score in this larger-than-life adventure?
 
