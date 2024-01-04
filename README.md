@@ -18,7 +18,7 @@ Challenge yourself with this classic Snake Game, now with doubled dimensions! En
 
 3. Avoid collisions with the borders and yourself.
 
-4. **PC:** Press `Ctrl +` to make the map bigger, and `Ctrl -` to make the map smaller.
+4. **PC:** Press `Ctrl +` to make the map bigger, and `Ctrl -` to make the map smaller. # Recommended Zoom : 80% 
 
 🔄 **How to Restart:**
 Click the "Restart" button or refresh the page to start a new game.
