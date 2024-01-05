@@ -47,6 +47,22 @@
       margin: 0 20px;
       font-size: 18px;
     }
+
+    #playerNameInput {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #submitScoreBtn {
+      padding: 15px;
+      background-color: #008000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 16px;
+    }
   </style>
   <title>Snake Game</title>
 </head>
@@ -54,9 +70,13 @@
 <body>
   <div id="menu">
     <h1>Snake Game</h1>
+    <p id="gameOverText">Game Over</p>
+    <label for="playerNameInput">Enter Your Name:</label>
+    <input type="text" id="playerNameInput" placeholder="Your Name">
+    <button id="submitScoreBtn">Submit Score</button>
     <button id="restartBtn">Restart</button>
   </div>
- <button id="pauseBtn" style="position: absolute; top: 10px; right: 10px; padding: 20px; color: #fff; border: none; cursor: pointer; font-size: 24px; background: none;">⏸️</button>
+  <button id="pauseBtn" style="position: absolute; top: 10px; right: 10px; padding: 20px; color: #fff; border: none; cursor: pointer; font-size: 24px; background: none;">⏸️</button>
 
 
   <canvas id="snakeCanvas"></canvas>
@@ -284,18 +304,36 @@
     // Start the game loop
     gameInterval = setInterval(move, 80); // Adjust the interval for a faster snake
 
-    function pauseGame() {
-      gameRunning = false;
-      clearInterval(gameInterval);
-      document.getElementById("pauseBtn").innerText = "⏯️";
+    // Function to submit the score and player's name
+    function submitScore() {
+      const playerNameInput = document.getElementById("playerNameInput");
+      const playerName = playerNameInput.value.trim();
+
+      if (playerName !== "") {
+        // Construct the leaderboard entry (assuming markdown table format)
+        const leaderboardEntry = `| ${playerName} | ${score} |\n`;
+
+        // Append the entry to the leaderboard.md file
+        fetch('leaderboard.md', { method: 'POST', body: leaderboardEntry })
+          .then(response => {
+            if (response.ok) {
+              console.log('Score submitted successfully!');
+            } else {
+              console.error('Failed to submit score.');
+            }
+          })
+          .catch(error => console.error('Error:', error));
+
+        // Hide the menu after submitting the score
+        hideMenu();
+      }
     }
 
-    function resumeGame() {
-      gameRunning = true;
-      gameInterval = setInterval(move, 80);
-      document.getElementById("pauseBtn").innerText = "⏸️";
-    }
+    // Event listener for the submit score button
+    const submitScoreBtn = document.getElementById("submitScoreBtn");
+    submitScoreBtn.addEventListener("click", submitScore);
 
+    // Event listener for the pause button
     const pauseBtn = document.getElementById("pauseBtn");
     pauseBtn.addEventListener("click", () => {
       if (gameRunning) {
@@ -304,6 +342,7 @@
         resumeGame();
       }
     });
+
   </script>
 </body>
 
