@@ -38,30 +38,33 @@
       margin: 0 0 30px;
     }
 
-    #restartBtn {
+    #restartBtn,
+    #pauseBtn,
+    #saveScoreBtn {
       padding: 20px;
       background-color: #008000;
       color: #fff;
       border: none;
       cursor: pointer;
-      margin: 0 20px;
       font-size: 18px;
     }
 
-    #playerNameInput {
-      margin-top: 20px;
-      padding: 10px;
-      font-size: 16px;
+    #pauseBtn,
+    #saveScoreBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      background: none;
     }
 
-    #submitScoreBtn {
-      padding: 15px;
-      background-color: #008000;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 16px;
+    #saveScoreBtn {
+           position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      background: none;
+    }
     }
   </style>
   <title>Snake Game</title>
@@ -71,16 +74,14 @@
   <div id="menu">
     <h1>Snake Game</h1>
     <p id="gameOverText">Game Over</p>
-
-    <button id="restartBtn">Restart</button>
+    <button id="restartBtn" onclick="resetGame()">Restart</button>
+    <button id="saveScoreBtn" onclick="manualSave()">📊</button>
   </div>
-  <button id="pauseBtn" style="position: absolute; top: 10px; right: 10px; padding: 20px; color: #fff; border: none; cursor: pointer; font-size: 24px; background: none;">⏸️</button>
-
+  <button id="pauseBtn" onclick="togglePause()">⏸️</button>
 
   <canvas id="snakeCanvas"></canvas>
 
   <script>
-    // Game variables
     const canvas = document.getElementById("snakeCanvas");
     const ctx = canvas.getContext("2d");
     const boxSize = 40;
@@ -92,13 +93,11 @@
     let gameRunning = true;
     let gameInterval;
 
-    // Set canvas size
     function setCanvasSize() {
       canvas.width = Math.floor((window.innerWidth - 20) / gridSize) * gridSize;
       canvas.height = Math.floor((window.innerHeight - 20) / gridSize) * gridSize;
     }
 
-    // Draw grid on the canvas
     function drawGrid() {
       ctx.beginPath();
       ctx.strokeStyle = "#ddd";
@@ -117,7 +116,6 @@
       ctx.closePath();
     }
 
-    // Draw rounded rectangle
     function drawRoundedRect(x, y, width, height, radius) {
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
@@ -129,7 +127,6 @@
       ctx.fill();
     }
 
-    // Draw game elements
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGrid();
@@ -147,7 +144,6 @@
       ctx.fillText("Score: " + score, 10, 50);
     }
 
-    // Move the snake
     function move() {
       if (!gameRunning) return;
 
@@ -182,7 +178,7 @@
         head.y < 0 || head.y >= canvas.height / gridSize ||
         collisionWithSelf()
       ) {
-        showMenu();
+        showMenuWithSaveButton();
         gameRunning = false;
         clearInterval(gameInterval);
         return;
@@ -191,12 +187,10 @@
       draw();
     }
 
-    // Check collision with self
     function collisionWithSelf() {
       return snake.slice(1).some(segment => segment.x === snake[0].x && segment.y === snake[0].y);
     }
 
-    // Reset the game
     function resetGame() {
       snake = [{ x: 5, y: 5 }];
       food = getRandomFoodPosition();
@@ -205,10 +199,9 @@
       gameRunning = true;
       hideMenu();
       clearInterval(gameInterval);
-      gameInterval = setInterval(move, 80); // Adjust the interval for a faster snake
+      gameInterval = setInterval(move, 150); // slower speed
     }
 
-    // Get random food position within borders
     function getRandomFoodPosition() {
       return {
         x: Math.floor(Math.random() * (canvas.width / gridSize)),
@@ -216,33 +209,52 @@
       };
     }
 
-    // Show menu
-    function showMenu() {
+    function showMenuWithSaveButton() {
       const menu = document.getElementById("menu");
       menu.style.display = "block";
+      document.getElementById("saveScoreBtn").style.display = "block";
     }
 
-    // Hide menu
     function hideMenu() {
       const menu = document.getElementById("menu");
       menu.style.display = "none";
     }
 
-    // Pause the game
-    function pauseGame() {
-      gameRunning = false;
-      clearInterval(gameInterval);
-      document.getElementById("pauseBtn").innerText = "⏯️";
+    function togglePause() {
+      gameRunning = !gameRunning;
+
+      if (gameRunning) {
+        gameInterval = setInterval(move, 150); // slower speed
+        document.getElementById("pauseBtn").innerText = "⏸️";
+      } else {
+        clearInterval(gameInterval);
+        document.getElementById("pauseBtn").innerText = "▶️";
+      }
     }
 
-    // Resume the game
-    function resumeGame() {
-      gameRunning = true;
-      gameInterval = setInterval(move, 80);
-      document.getElementById("pauseBtn").innerText = "⏸️";
+    function manualSave() {
+      const leaderboardEntry = `| ${score} | ${new Date().toLocaleString()} |\n`;
+      const leaderboardLink = 'https://github.com/vatistasdimitris/snakegame/blob/main/leaderboard.md';
+
+      fetch('saveScore.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ entry: leaderboardEntry }),
+      })
+        .then(response => response.json())
+        .then(result => {
+          console.log('Score saved successfully!', result);
+          const alertMessage = `Score saved successfully!\nCheck the leaderboard [here](${leaderboardLink}).`;
+          alert(alertMessage);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error saving score. Please try again.');
+        });
     }
 
-    // Event listeners
     const restartBtn = document.getElementById("restartBtn");
     restartBtn.addEventListener("click", resetGame);
 
@@ -295,24 +307,9 @@
       touchStartY = 0;
     }
 
-    // Set initial canvas size and listen for resize
     setCanvasSize();
     window.addEventListener("resize", setCanvasSize);
-
-    // Start the game loop
-    gameInterval = setInterval(move, 80); // Adjust the interval for a faster snake
-
-    
-    // Event listener for the pause button
-    const pauseBtn = document.getElementById("pauseBtn");
-    pauseBtn.addEventListener("click", () => {
-      if (gameRunning) {
-        pauseGame();
-      } else {
-        resumeGame();
-      }
-    });
-
+    gameInterval = setInterval(move, 150); // slower speed
   </script>
 </body>
 
