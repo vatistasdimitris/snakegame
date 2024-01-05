@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="snake.png" type="image/png">
-<link rel="shortcut icon" href="snake.png" type="image/png">
+  <link rel="shortcut icon" href="snake.png" type="image/png">
 
   <style>
     body {
@@ -56,6 +56,8 @@
     <h1>Snake Game</h1>
     <button id="restartBtn">Restart</button>
   </div>
+  <button id="pauseBtn" style="position: absolute; top: 10px; right: 10px; padding: 10px; color: #fff; border: none; cursor: pointer; font-size: 16px; background: none;">⏸️</button>
+
   <canvas id="snakeCanvas"></canvas>
 
   <script>
@@ -69,6 +71,7 @@
     let direction = "down";
     let score = 0;
     let gameRunning = true;
+    let gameInterval;
 
     // Set canvas size
     function setCanvasSize() {
@@ -162,6 +165,7 @@
       ) {
         showMenu();
         gameRunning = false;
+        clearInterval(gameInterval);
         return;
       }
 
@@ -181,6 +185,8 @@
       score = 0;
       gameRunning = true;
       hideMenu();
+      clearInterval(gameInterval);
+      gameInterval = setInterval(move, 80); // Adjust the interval for a faster snake
     }
 
     // Get random food position within borders
@@ -206,12 +212,15 @@
     // Pause the game
     function pauseGame() {
       gameRunning = false;
+      clearInterval(gameInterval);
+      document.getElementById("pauseBtn").innerText = "⏯️";
     }
 
     // Resume the game
     function resumeGame() {
       gameRunning = true;
-      move();
+      gameInterval = setInterval(move, 80);
+      document.getElementById("pauseBtn").innerText = "⏸️";
     }
 
     // Event listeners
@@ -272,7 +281,28 @@
     window.addEventListener("resize", setCanvasSize);
 
     // Start the game loop
-    setInterval(move, 100);
+    gameInterval = setInterval(move, 80); // Adjust the interval for a faster snake
+
+    function pauseGame() {
+      gameRunning = false;
+      clearInterval(gameInterval);
+      document.getElementById("pauseBtn").innerText = "⏯️";
+    }
+
+    function resumeGame() {
+      gameRunning = true;
+      gameInterval = setInterval(move, 80);
+      document.getElementById("pauseBtn").innerText = "⏸️";
+    }
+
+    const pauseBtn = document.getElementById("pauseBtn");
+    pauseBtn.addEventListener("click", () => {
+      if (gameRunning) {
+        pauseGame();
+      } else {
+        resumeGame();
+      }
+    });
   </script>
 </body>
 
