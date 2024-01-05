@@ -2,17 +2,13 @@
 
 header('Content-Type: application/json');
 
-// Get the JSON data from the request body
-$data = json_decode(file_get_contents('php://input'), true);
+$newScore = json_decode(file_get_contents('php://input'), true);
 
-if ($data && isset($data['entry'])) {
-    // Append the entry to the leaderboard file
-    file_put_contents('leaderboard.md', $data['entry'], FILE_APPEND | LOCK_EX);
+// Append the new score to the JSON file
+$leaderboardData = json_decode(file_get_contents('leaderboard.json'), true);
+$leaderboardData[] = $newScore;
+file_put_contents('leaderboard.json', json_encode($leaderboardData));
 
-    // Respond with a success message
-    echo json_encode(['success' => true]);
-} else {
-    // Respond with an error message
-    echo json_encode(['success' => false, 'error' => 'Invalid data']);
-}
+echo json_encode(['success' => true]);
+
 ?>
