@@ -24,9 +24,9 @@ Challenge yourself with this classic Snake Game, now with doubled dimensions! En
 Click the "Restart" button or refresh the page to start a new game.
 
 🚀 **Ready to Play? Try it out :
- 1.[PC](https://snake-apple.w3spaces-preview.com/snakegame.html)**
- 2.[Phone-App(Google drive)](https://drive.google.com/file/d/11Fxr0sLUUR-XDMLGE5h2bBZ32yqFI_eW/view?usp=sharing)**
- 3.[Phone-App](https://median.co/share/nwmljx)**
+ 1.[PC](https://snake-apple.w3spaces-preview.com/snakegame.html)
+ 2.[Phone-App(Google drive)](https://drive.google.com/file/d/11Fxr0sLUUR-XDMLGE5h2bBZ32yqFI_eW/view?usp=sharing)
+ 3.[Phone-App](https://median.co/share/nwmljx)
 
 
 Enjoy the Snake Game and have fun trying to outsmart the snake! 🚴‍♂️🐍
