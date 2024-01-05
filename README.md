@@ -1,4 +1,3 @@
-# snakegame
 # Snake Game 🐍
 Only for PC and Android phones 
 
@@ -31,3 +30,5 @@ Click the "Restart" button or refresh the page to start a new game.
 
 
 Enjoy the Snake Game and have fun trying to outsmart the snake! 🚴‍♂️🐍
+
+#[vatistasdimitris](instagram.com/vatistasdimitris)
