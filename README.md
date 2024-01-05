@@ -24,9 +24,9 @@ Challenge yourself with this classic Snake Game, now with doubled dimensions! En
 Click the "Restart" button or refresh the page to start a new game.
 
 🚀 **Ready to Play? Try it out :
- 1.[PC](https://vatistasdimitris.github.io/snakegame/)
- 2.[Phone-App(Google drive)](https://drive.google.com/file/d/11Fxr0sLUUR-XDMLGE5h2bBZ32yqFI_eW/view?usp=sharing)
- 3.[Phone-App](snakegame.apk)
+ [PC](https://vatistasdimitris.github.io/snakegame/)
+ 
+ [Phone-App](snakegame.apk)
 
 📊 **Leaderboard:** Check out the [Leaderboard](leaderboard.md) to see the high scores!
 
