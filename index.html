@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,63 +10,61 @@
 
   <style>
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
 
-    canvas {
-      border: 2px solid #000;
-    }
+canvas {
+  border: 2px solid #000;
+}
 
-    #menu {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #fff;
-      padding: 40px;
-      border: 4px solid #000;
-      text-align: center;
-    }
+#menu {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 40px;
+  border: 4px solid #000;
+  text-align: center;
+}
 
-    #menu h1 {
-      margin: 0 0 30px;
-    }
+#menu h1 {
+  margin: 0 0 30px;
+}
 
-    #restartBtn,
-    #pauseBtn,
-    #saveScoreBtn {
-      padding: 20px;
-      background-color: #008000;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-    }
+#restartBtn {
+  padding: 20px;
+  background-color: #008000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin: 0 20px;
+  font-size: 18px;
+}
 
-    #pauseBtn,
-    #saveScoreBtn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 24px;
-      background: none;
-    }
+#playerNameInput {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
 
-    #saveScoreBtn {
-           position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 24px;
-      background: none;
-    }
-    }
+#submitScoreBtn {
+  padding: 15px;
+  background-color: #008000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
   </style>
   <title>Snake Game</title>
 </head>
@@ -74,14 +73,20 @@
   <div id="menu">
     <h1>Snake Game</h1>
     <p id="gameOverText">Game Over</p>
-    <button id="restartBtn" onclick="resetGame()">Restart</button>
-    <button id="saveScoreBtn" onclick="manualSave()">📊</button>
+    <!-- Player name input added to the menu -->
+    <label for="playerNameInput">Enter Your Name:</label>
+    <input type="text" id="playerNameInput" placeholder="Your Name">
+    <!-- Submit Score button modified to call the submitScore function -->
+    <button id="submitScoreBtn" onclick="submitScore()">Submit Score</button>
+    <button id="restartBtn">Restart</button>
   </div>
-  <button id="pauseBtn" onclick="togglePause()">⏸️</button>
+  <!-- Pause button style and position updated -->
+  <button id="pauseBtn" style="position: absolute; top: 10px; right: 10px; padding: 20px; color: #fff; border: none; cursor: pointer; font-size: 24px; background: none;">⏸️</button>
 
   <canvas id="snakeCanvas"></canvas>
 
   <script>
+    // Game variables
     const canvas = document.getElementById("snakeCanvas");
     const ctx = canvas.getContext("2d");
     const boxSize = 40;
@@ -93,11 +98,13 @@
     let gameRunning = true;
     let gameInterval;
 
+    // Set canvas size
     function setCanvasSize() {
       canvas.width = Math.floor((window.innerWidth - 20) / gridSize) * gridSize;
       canvas.height = Math.floor((window.innerHeight - 20) / gridSize) * gridSize;
     }
 
+    // Draw grid on the canvas
     function drawGrid() {
       ctx.beginPath();
       ctx.strokeStyle = "#ddd";
@@ -116,6 +123,7 @@
       ctx.closePath();
     }
 
+    // Draw rounded rectangle
     function drawRoundedRect(x, y, width, height, radius) {
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
@@ -127,6 +135,7 @@
       ctx.fill();
     }
 
+    // Draw game elements
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGrid();
@@ -144,6 +153,7 @@
       ctx.fillText("Score: " + score, 10, 50);
     }
 
+    // Move the snake
     function move() {
       if (!gameRunning) return;
 
@@ -178,7 +188,7 @@
         head.y < 0 || head.y >= canvas.height / gridSize ||
         collisionWithSelf()
       ) {
-        showMenuWithSaveButton();
+        showMenu();
         gameRunning = false;
         clearInterval(gameInterval);
         return;
@@ -187,10 +197,12 @@
       draw();
     }
 
+    // Check collision with self
     function collisionWithSelf() {
       return snake.slice(1).some(segment => segment.x === snake[0].x && segment.y === snake[0].y);
     }
 
+    // Reset the game
     function resetGame() {
       snake = [{ x: 5, y: 5 }];
       food = getRandomFoodPosition();
@@ -199,9 +211,10 @@
       gameRunning = true;
       hideMenu();
       clearInterval(gameInterval);
-      gameInterval = setInterval(move, 150); // slower speed
+      gameInterval = setInterval(move, 80);
     }
 
+    // Get random food position within borders
     function getRandomFoodPosition() {
       return {
         x: Math.floor(Math.random() * (canvas.width / gridSize)),
@@ -209,52 +222,33 @@
       };
     }
 
-    function showMenuWithSaveButton() {
+    // Show menu
+    function showMenu() {
       const menu = document.getElementById("menu");
       menu.style.display = "block";
-      document.getElementById("saveScoreBtn").style.display = "block";
     }
 
+    // Hide menu
     function hideMenu() {
       const menu = document.getElementById("menu");
       menu.style.display = "none";
     }
 
-    function togglePause() {
-      gameRunning = !gameRunning;
-
-      if (gameRunning) {
-        gameInterval = setInterval(move, 150); // slower speed
-        document.getElementById("pauseBtn").innerText = "⏸️";
-      } else {
-        clearInterval(gameInterval);
-        document.getElementById("pauseBtn").innerText = "▶️";
-      }
+    // Pause the game
+    function pauseGame() {
+      gameRunning = false;
+      clearInterval(gameInterval);
+      document.getElementById("pauseBtn").innerText = "⏯️";
     }
 
-    function manualSave() {
-      const leaderboardEntry = `| ${score} | ${new Date().toLocaleString()} |\n`;
-      const leaderboardLink = 'https://github.com/vatistasdimitris/snakegame/blob/main/leaderboard.md';
-
-      fetch('saveScore.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ entry: leaderboardEntry }),
-      })
-        .then(response => response.json())
-        .then(result => {
-          console.log('Score saved successfully!', result);
-          const alertMessage = `Score saved successfully!\nCheck the leaderboard [here](${leaderboardLink}).`;
-          alert(alertMessage);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Error saving score. Please try again.');
-        });
+    // Resume the game
+    function resumeGame() {
+      gameRunning = true;
+      gameInterval = setInterval(move, 80);
+      document.getElementById("pauseBtn").innerText = "⏸️";
     }
 
+    // Event listeners
     const restartBtn = document.getElementById("restartBtn");
     restartBtn.addEventListener("click", resetGame);
 
@@ -307,9 +301,40 @@
       touchStartY = 0;
     }
 
+    // Set initial canvas size and listen for resize
     setCanvasSize();
     window.addEventListener("resize", setCanvasSize);
-    gameInterval = setInterval(move, 150); // slower speed
+
+    // Start the game loop
+    gameInterval = setInterval(move, 80);
+
+    // Function to submit the score and player's name
+    function submitScore() {
+      const playerNameInput = document.getElementById("playerNameInput");
+      const playerName = playerNameInput.value.trim();
+
+      if (playerName !== "") {
+        const data = {
+          playerName: playerName,
+          score: score
+        };
+
+        fetch('submitScore.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then(response => response.json())
+          .then(result => {
+            console.log('Score submitted successfully!', result);
+          })
+          .catch(error => console.error('Error:', error));
+
+        hideMenu();
+      }
+    }
   </script>
 </body>
 
