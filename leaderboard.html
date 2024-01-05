@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Leaderboard</title>
+</head>
+<body>
+    <h1>Simple Leaderboard</h1>
+    <button id="saveScoreBtn" onclick="saveScore()">Save Score</button>
+    <div id="leaderboard"></div>
+
+    <script>
+        function saveScore() {
+            const playerName = prompt("Enter your name:");
+            const score = /* Your score logic here */;
+
+            if (playerName && score !== null) {
+                const data = {
+                    playerName: playerName,
+                    score: score,
+                };
+
+                fetch('saveScore.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Score saved successfully!', result);
+                    fetchLeaderboard(); // Refresh leaderboard after saving a score
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+
+        function fetchLeaderboard() {
+            fetch('leaderboard.md') // Assuming this URL serves the leaderboard.md file
+                .then(response => response.text())
+                .then(data => {
+                    const leaderboardContainer = document.getElementById('leaderboard');
+                    leaderboardContainer.innerHTML = '<h2>Leaderboard</h2>' + data;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Fetch leaderboard when the page loads
+        fetchLeaderboard();
+    </script>
+</body>
+</html>
