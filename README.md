@@ -1,4 +1,4 @@
-2# Snake Game 🐍
+# Snake Game 🐍
 Only for PC and Android phones 
 
 Challenge yourself with this classic Snake Game, now with doubled dimensions! Enjoy the nostalgic gameplay as you control the snake to eat apples and grow longer. 🍏 Can you beat your high score in this larger-than-life adventure?
@@ -31,4 +31,4 @@ Click the "Restart" button or refresh the page to start a new game.
 
 Enjoy the Snake Game and have fun trying to outsmart the snake! 🚴‍♂️🐍
 
-[#vatistasdimitris](https://instagram.com/vatistasdimitris)
+[By vatistasdimitris](https://instagram.com/vatistasdimitris)
