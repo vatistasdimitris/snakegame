@@ -31,4 +31,4 @@ Click the "Restart" button or refresh the page to start a new game.
 
 Enjoy the Snake Game and have fun trying to outsmart the snake! 🚴‍♂️🐍
 
-[By vatistasdimitris](https://instagram.com/vatistasdimitris)
+[Instagram](https://instagram.com/vatistasdimitris)
