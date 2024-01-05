@@ -28,6 +28,8 @@ Click the "Restart" button or refresh the page to start a new game.
  2.[Phone-App(Google drive)](https://drive.google.com/file/d/11Fxr0sLUUR-XDMLGE5h2bBZ32yqFI_eW/view?usp=sharing)
  3.[Phone-App](https://median.co/share/nwmljx)
 
+📊 **Leaderboard:** Check out the [Leaderboard](leaderboard.md) to see the high scores!
+
 
 Enjoy the Snake Game and have fun trying to outsmart the snake! 🚴‍♂️🐍
 
