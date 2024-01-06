@@ -27,7 +27,7 @@ Click the "Restart" button or refresh the page to start a new game.
 
  [PC](https://vatistasdimitris.github.io/snakegame/)
  
- [Phone-App](snakegame.apk)
+ [Phone-App](https://median.co/share/nwmwqr)
 
 📊 **Leaderboard:** Check out the [Leaderboard](leaderboard.md) to see the high scores!
 
